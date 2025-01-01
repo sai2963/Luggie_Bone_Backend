@@ -1,0 +1,23 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Bags {
+  id            Int      @id @default(autoincrement())
+  username      String   @db.VarChar(255)
+  title         String   @db.VarChar(255)
+  price         String   @db.VarChar(50)
+  brand         String   @db.VarChar(255)
+  size          String   @db.VarChar(50)
+  color         String   @db.VarChar(50)
+  quantity      String   @db.VarChar(50)
+  features      String   @db.Text
+  manufacturedBy String  @db.VarChar(255)
+  materialCare  String   @db.Text
+  terms         String   @db.Text    // Changed to Text type to handle longer content
+}
