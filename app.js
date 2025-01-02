@@ -6,6 +6,7 @@ const cors = require("cors");
 const prismaClient = require("./lib/db");
 const prisma = prismaClient.prisma;
 
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -21,6 +22,9 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+app.get("/", async (req, res) => {
+    res.json({ message: "Hello, world!" });
+})
 
 app.post("/api/post", upload.single('image'), async (req, res) => {
   const value = req.body;
@@ -49,6 +53,15 @@ app.post("/api/post", upload.single('image'), async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+app.get("/api/get", async (req, res) => {
+    try {
+        const posts = await prisma.bags.findMany();
+        res.json(posts);
+    } catch (err) {
+        console.error("Database error:", err);
+        res.status(500).json({ error: err.message });
+    }
+})
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
