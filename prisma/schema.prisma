@@ -20,4 +20,6 @@ model Bags {
   manufacturedBy String  @db.VarChar(255)
   materialCare  String   @db.Text
   terms         String   @db.Text    // Changed to Text type to handle longer content
+  image          String?  @db.VarChar(255)
+  category     String?   @db.VarChar(255)
 }

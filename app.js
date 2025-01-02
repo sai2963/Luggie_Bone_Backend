@@ -1,19 +1,30 @@
 const express = require("express");
+const multer = require("multer");
+const path = require("path");
+const cors = require("cors");
 
-const app = express();
 const prismaClient = require("./lib/db");
 const prisma = prismaClient.prisma;
 
-const cors = require("cors");
+const app = express();
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.get("/", (req, res) => {
-    res.send("Hello World");
-})
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
 
-app.post("/api/post", async (req, res) => {
+const upload = multer({ storage });
+
+app.post("/api/post", upload.single('image'), async (req, res) => {
   const value = req.body;
+  const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
 
   try {
     const post = await prisma.bags.create({
@@ -29,23 +40,16 @@ app.post("/api/post", async (req, res) => {
         manufacturedBy: value.manufacturedBy,
         materialCare: value.materialCare,
         terms: value.terms,
+        image: imagePath,
       },
     });
     res.json(post);
-    // console.log("Created post:", post);
   } catch (err) {
-    console.error("Database error:", err); // Log the full error
-    res.status(500).json({
-      error: err.message,
-      code: err.code,
-      meta: err.meta,
-    });
+    console.error("Database error:", err);
+    res.status(500).json({ error: err.message });
   }
 });
-app.get("/api/get", async (req, res) => {
-  const posts = await prisma.bags.findMany();
-  res.json(posts);
-});
+
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
