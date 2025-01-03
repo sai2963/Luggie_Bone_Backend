@@ -1,71 +1,79 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
+const prisma = require("./prisma"); // Replace with your Prisma client initialization
 const cors = require("cors");
-const prismaClient = require("./lib/db");
-const prisma = prismaClient.prisma;
 
 const app = express();
+const port = 5000;
+
+// Middleware
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.urlencoded({ extended: true }));
 
-const storageConfig = multer.diskStorage({
+// Multer Configuration
+const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, "uploads");
-    cb(null, uploadPath);
+    cb(null, path.join(__dirname, "uploads"));
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname));
   },
 });
 
-const upload = multer({ storage: storageConfig });
+const upload = multer({ storage });
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
-
-app.get("/api/get", async (req, res) => {
-
-  const posts = await prisma.bags.findMany();
-  res.json(posts);
-});
-
+// API Routes
 app.post("/api/post", upload.single("imageupload"), async (req, res) => {
-  const { username, title, price, brand, size, color, quantity, features, manufacturedBy, materialCare, terms } = req.body;
-  const image = req.file?.path;
-
-  if (!image) {
-    return res.status(400).json({ error: "Image file is required" });
-  }
-
   try {
+    const {
+      username,
+      title,
+      price,
+      brand,
+      size,
+      color,
+      quantity,
+      features,
+      manufacturedBy,
+      materialCare,
+      terms,
+    } = req.body;
+
+    if (!req.file) {
+      return res.status(400).json({ error: "Image file is required" });
+    }
+
     const post = await prisma.bags.create({
       data: {
         username,
         title,
-        price,
+        price: parseFloat(price),
         brand,
         size,
         color,
-        quantity,
+        quantity: parseInt(quantity),
         features,
         manufacturedBy,
         materialCare,
         terms,
-        image,
+        image: `/uploads/${req.file.filename}`,
       },
     });
-    res.json(post);
-  } catch (err) {
-    console.error("Database error:", err);
-    res.status(500).json({ error: err.message });
+
+    res.status(201).json({ success: true, data: post });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error", details: error.message });
   }
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+// Serve Uploaded Files
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Start the Server
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
 });
-
-
