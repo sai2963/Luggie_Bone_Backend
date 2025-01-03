@@ -10,17 +10,17 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-const storageConfig = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, "uploads");
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
+// const storageConfig = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     const uploadPath = path.join(__dirname, "uploads");
+//     cb(null, uploadPath);
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, `${Date.now()}-${file.originalname}`);
+//   },
+// });
 
-const upload = multer({ storage: storageConfig });
+// const upload = multer({ storage: storageConfig });
 
 app.get("/", (req, res) => {
   res.send("Hello World");
@@ -34,11 +34,11 @@ app.get("/api/get", async (req, res) => {
 
 app.post("/api/post", upload.single("imageupload"), async (req, res) => {
   const { username, title, price, brand, size, color, quantity, features, manufacturedBy, materialCare, terms } = req.body;
-  const image = req.file?.path;
+  // const image = req.file?.path;
 
-  if (!image) {
-    return res.status(400).json({ error: "Image file is required" });
-  }
+  // if (!image) {
+  //   return res.status(400).json({ error: "Image file is required" });
+  // }
 
   try {
     const post = await prisma.bags.create({
@@ -54,7 +54,7 @@ app.post("/api/post", upload.single("imageupload"), async (req, res) => {
         manufacturedBy,
         materialCare,
         terms,
-        image,
+       // image,
       },
     });
     res.json(post);
