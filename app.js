@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
-
+const bodyParser = require("body-parser");
 const prismaClient = require("./lib/db");
 const prisma = prismaClient.prisma;
 
@@ -11,25 +11,26 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+const storageConfig=multer.diskStorage({
+  destination:(req,file,cb)=>{
+      cb(null,'images');
   },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
+  filename:(req,file,cb)=>{
+      cb(null,Date.now()+'-'+file.originalname)
+  }
+})
 
-const upload = multer({ storage });
+const upload=multer({storage:storageConfig});
 app.get("/", async (req, res) => {
     res.json({ message: "Hello, world!" });
 })
 
-app.post("/api/post", upload.single('image'), async (req, res) => {
+app.post("/api/post", upload.single('imageupload'), async (req, res) => {
   const value = req.body;
-  const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
-
+  const uploadImagefile=req.file;
   try {
     const post = await prisma.bags.create({
       data: {
@@ -44,7 +45,7 @@ app.post("/api/post", upload.single('image'), async (req, res) => {
         manufacturedBy: value.manufacturedBy,
         materialCare: value.materialCare,
         terms: value.terms,
-        image: imagePath,
+        image: uploadImagefile.path,
       },
     });
     res.json(post);
