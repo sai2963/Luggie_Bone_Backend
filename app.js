@@ -3,8 +3,22 @@ const express = require("express");
 const app = express();
 const prismaClient = require("./lib/db");
 const prisma = prismaClient.prisma;
+const multer = require("multer");
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '/uploads')
+  },
+  filename: function (req, file, cb) {
+    
+    cb(null, file.originalname)
+  }
+})
+
+
+const upload = multer({ storage });
 const cors = require("cors");
+const multer = require("multer");
 app.use(cors());
 app.use(express.json());
 
@@ -12,8 +26,11 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 })
 
-app.post("/api/post", async (req, res) => {
+app.post("/api/post", upload.single('file'),async (req, res) => {
   const value = req.body;
+  const imagefile = req.file;
+  console.log(imagefile);
+  
 
   try {
     const post = await prisma.bags.create({
@@ -29,6 +46,7 @@ app.post("/api/post", async (req, res) => {
         manufacturedBy: value.manufacturedBy,
         materialCare: value.materialCare,
         terms: value.terms,
+        image:imagefile.path
       },
     });
     res.json(post);
