@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 const cors = require("cors");
 //const multer = require("multer");
-app.use(cors());
+app.use(cors({ origin: "https://luggie-bone-frontend.vercel.app/" }));
 app.use(express.json());
 
 app.get("/", (req, res) => {
