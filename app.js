@@ -1,8 +1,9 @@
 const express = require("express");
-const axios = require("axios"); // Add axios import
+const axios = require("axios");
 const app = express();
 const prismaClient = require("./lib/db");
 const prisma = prismaClient.prisma;
+require('dotenv').config(); // Add this to load environment variables
 
 const cors = require("cors");
 app.use(cors());
@@ -58,37 +59,37 @@ app.get("/api/get", async (req, res) => {
 
 app.get("/api/products/get", async (req, res) => {
   try {
-    // Create an array of promises for all API calls
+    // Create an array of promises for all API calls using environment variables
     const apiCalls = [
-      axios.get("https://vipbags.com/collections/new-arrivals/products.json"),
-      axios.get("https://vipbags.com/collections/bestsellers/products.json"),
-      axios.get("https://vipbags.com/collections/hard-luggage/products.json"),
-      axios.get("https://vipbags.com/collections/soft-luggage/products.json"),
-      axios.get("https://vipbags.com/collections/cabin-luggage/products.json"),
-      axios.get("https://vipbags.com/collections/check-in-luggage/products.json"),
-      axios.get("https://vipbags.com/collections/lightweight-luggage/products.json"),
-      axios.get("https://vipbags.com/collections/luggage-set/products.json"),
-      axios.get("https://vipbags.com/collections/duffles/products.json"),
-      axios.get("https://skybags.co.in/collections/hard-luggage/products.json"),
-      axios.get("https://skybags.co.in/collections/soft-luggage/products.json"),
-      axios.get("https://skybags.co.in/collections/cabin-luggage/products.json"),
-      axios.get("https://skybags.co.in/collections/medium-luggage/products.json"),
-      axios.get("https://skybags.co.in/collections/large-luggage/products.json"),
-      axios.get("https://skybags.co.in/collections/tsa-lock-luggage/products.json"),
-      axios.get("https://skybags.co.in/collections/anti-theft-luggage/products.json"),
-      axios.get("https://skybags.co.in/collections/dual-wheels-luggage/products.json"),
-      axios.get("https://skybags.co.in/collections/backpacks/products.json"),
-      axios.get("https://skybags.co.in/collections/duffle/products.json"),
-      axios.get("https://skybags.co.in/collections/travelling-bags-for-students/products.json"),
-      axios.get("https://safaribags.com/collections/trolley-bags/products.json"),
-      axios.get("https://safaribags.com/collections/backpacks/products.json"),
-      axios.get("https://safaribags.com/collections/duffles/products.json"),
-      axios.get("https://safaribags.com/collections/accessories/products.json"),
-      axios.get("https://www.capresebags.com/collections/all/products.json"),
-      axios.get("https://www.capresebags.com/collections/handbags-for-women/products.json"),
-      axios.get("https://www.capresebags.com/collections/slings-for-women/products.json"),
-      axios.get("https://www.capresebags.com/collections/accessories-for-women/products.json"),
-      axios.get("https://www.capresebags.com/collections/backpacks-for-women/products.json")
+      axios.get(process.env.VIP_NEW_ARRAIVALS),
+      axios.get(process.env.VIP_BESTSELLERS),
+      axios.get(process.env.VIP_HARD_LUGGAGE),
+      axios.get(process.env.VIP_SOFT_LUGGAGE),
+      axios.get(process.env.VIP_CABIN_LUGGUAGE),
+      axios.get(process.env.VIP_CHECH_IN_LUGGAGE),
+      axios.get(process.env.VIP_LIGHT_WEIGHT),
+      axios.get(process.env.VIP_LUGGAGE_SET),
+      axios.get(process.env.VIP_DUFFLES),
+      axios.get(process.env.SKYBAGS_HARD_LUGGAGE),
+      axios.get(process.env.SKYBAGS_SOFT_LUGGAGE),
+      axios.get(process.env.SKYBAGS_CABIN_LUGGAGE),
+      axios.get(process.env.SKYBAGS_MEDIUM_LUGGAGE),
+      axios.get(process.env.SKYBAGS_LARGE_LUGGAGE),
+      axios.get(process.env.SKYBAGS_TSA_LOCK_LUGGAGE),
+      axios.get(process.env.SKYBAGS_ANTI_THEFT_LUGGAGE),
+      axios.get(process.env.SKYBAGS_DUAL_WHEELS_LUGGAGE),
+      axios.get(process.env.SKYBAGS_BACKPACKS),
+      axios.get(process.env.SKYBAGS_DUFFLE),
+      axios.get(process.env.SKYBAGS_TRAVELLING_BAG_FOR_STUDENT_LUGGAGE),
+      axios.get(process.env.SAFARI_TROLLEY_BAGS),
+      axios.get(process.env.SAFARI_BACKPACKS),
+      axios.get(process.env.SAFARI_DUFFLES),
+      axios.get(process.env.SAFARI_ACCESSORIES),
+      axios.get(process.env.CAPRESE_ALL),
+      axios.get(process.env.CAPRESE_HANDBAGS_FOR_WOMEN),
+      axios.get(process.env.CAPRESE_SLINGS_FOR_WOMEN),
+      axios.get(process.env.CAPRESE_ACCESSORIES_FOR_WOMEN),
+      axios.get(process.env.CAPRESE_BACKPACKS_FOR_WOMEN)
     ];
 
     const responses = await Promise.all(apiCalls);
