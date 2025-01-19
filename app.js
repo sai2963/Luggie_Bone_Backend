@@ -3,14 +3,14 @@ const axios = require("axios");
 const app = express();
 const prismaClient = require("./lib/db");
 const prisma = prismaClient.prisma;
-require('dotenv').config(); // Add this to load environment variables
+require("dotenv").config();
 
 const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.send("Hello World");
+  res.send("Hello World");
 });
 
 app.post("/api/post", async (req, res) => {
@@ -52,7 +52,7 @@ app.get("/api/get", async (req, res) => {
   } catch (err) {
     console.error("Database error:", err);
     res.status(500).json({
-      error: err.message
+      error: err.message,
     });
   }
 });
@@ -89,11 +89,11 @@ app.get("/api/products/get", async (req, res) => {
       axios.get(process.env.CAPRESE_HANDBAGS_FOR_WOMEN),
       axios.get(process.env.CAPRESE_SLINGS_FOR_WOMEN),
       axios.get(process.env.CAPRESE_ACCESSORIES_FOR_WOMEN),
-      axios.get(process.env.CAPRESE_BACKPACKS_FOR_WOMEN)
+      axios.get(process.env.CAPRESE_BACKPACKS_FOR_WOMEN),
     ];
 
     const responses = await Promise.all(apiCalls);
-    
+
     const combinedData = responses.reduce((acc, response) => {
       return acc.concat(response.data.products);
     }, []);
@@ -103,7 +103,7 @@ app.get("/api/products/get", async (req, res) => {
     console.error("Error fetching products:", error);
     res.status(500).json({
       error: "Failed to fetch products",
-      details: error.message
+      details: error.message,
     });
   }
 });
