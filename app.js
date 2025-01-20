@@ -108,6 +108,68 @@ app.get("/api/products/get", async (req, res) => {
   }
 });
 
+app.get("/api/products/:id", async (req, res) => {
+  try {
+    const productId = req.params.id;
+
+    // Fetch all products from APIs (same as /api/products/get)
+    const apiCalls = [
+      axios.get(process.env.VIP_NEW_ARRAIVALS),
+      axios.get(process.env.VIP_BESTSELLERS),
+      axios.get(process.env.VIP_HARD_LUGGAGE),
+      axios.get(process.env.VIP_SOFT_LUGGAGE),
+      axios.get(process.env.VIP_CABIN_LUGGUAGE),
+      axios.get(process.env.VIP_CHECH_IN_LUGGAGE),
+      axios.get(process.env.VIP_LIGHT_WEIGHT),
+      axios.get(process.env.VIP_LUGGAGE_SET),
+      axios.get(process.env.VIP_DUFFLES),
+      axios.get(process.env.SKYBAGS_HARD_LUGGAGE),
+      axios.get(process.env.SKYBAGS_SOFT_LUGGAGE),
+      axios.get(process.env.SKYBAGS_CABIN_LUGGAGE),
+      axios.get(process.env.SKYBAGS_MEDIUM_LUGGAGE),
+      axios.get(process.env.SKYBAGS_LARGE_LUGGAGE),
+      axios.get(process.env.SKYBAGS_TSA_LOCK_LUGGAGE),
+      axios.get(process.env.SKYBAGS_ANTI_THEFT_LUGGAGE),
+      axios.get(process.env.SKYBAGS_DUAL_WHEELS_LUGGAGE),
+      axios.get(process.env.SKYBAGS_BACKPACKS),
+      axios.get(process.env.SKYBAGS_DUFFLE),
+      axios.get(process.env.SKYBAGS_TRAVELLING_BAG_FOR_STUDENT_LUGGAGE),
+      axios.get(process.env.SAFARI_TROLLEY_BAGS),
+      axios.get(process.env.SAFARI_BACKPACKS),
+      axios.get(process.env.SAFARI_DUFFLES),
+      axios.get(process.env.SAFARI_ACCESSORIES),
+      axios.get(process.env.CAPRESE_ALL),
+      axios.get(process.env.CAPRESE_HANDBAGS_FOR_WOMEN),
+      axios.get(process.env.CAPRESE_SLINGS_FOR_WOMEN),
+      axios.get(process.env.CAPRESE_ACCESSORIES_FOR_WOMEN),
+      axios.get(process.env.CAPRESE_BACKPACKS_FOR_WOMEN),
+    ];
+
+    const responses = await Promise.all(apiCalls);
+
+    // Combine all products into a single array
+    const allProducts = responses.reduce((acc, response) => {
+      return acc.concat(response.data.products);
+    }, []);
+
+    // Find the product with the matching ID
+    const product = allProducts.find((p) => p.id === productId);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    res.json(product);
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    res.status(500).json({
+      error: "Failed to fetch product",
+      details: error.message,
+    });
+  }
+});
+
+
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
