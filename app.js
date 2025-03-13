@@ -4,7 +4,8 @@ const app = express();
 const prismaClient = require("./lib/db");
 const prisma = prismaClient.prisma;
 require("dotenv").config();
-import ApiCall from "./api";
+
+const ApiCall =require("./api")
 const cors = require("cors");
 app.use(cors());
 app.use(express.json());
@@ -61,13 +62,17 @@ app.get("/api/products/get", async (req, res) => {
   try {
     // Create an array of promises for all API calls using environment variables
     
-    const respnses= await ApiCall();
+    const responses= await ApiCall();
+    const data = responses
+    res.json(data);
     
-    const combinedData = responses.reduce((acc, response) => {
-      return acc.concat(response.data.products);
-    }, []);
+    
+    
+    // const combinedData = responses.reduce((acc, response) => {
+    //   return acc.concat(response.data.products);
+    // }, []);
 
-    res.json(combinedData);
+    // res.json(combinedData);
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).json({
@@ -80,31 +85,25 @@ app.get("/api/products/get", async (req, res) => {
 app.get("/api/products/:id", async (req, res) => {
   try {
     const productId = req.params.id;
-
-    // Fetch all products from APIs (same as /api/products/get)
-   
-
-    // Combine all products into a single array
-    const allProducts = responses.reduce((acc, response) => {
-      return acc.concat(response.data.products);
-    }, []);
-
-    // Find the product with the matching ID
-    const product = allProducts.find((p) => p.id === productId);
-
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
+    
+    let responses;
+    try {
+      responses = await ApiCall(); // Fetch API data
+      console.log(responses); // Debug: Check the response structure
+    } catch (error) {
+      console.log("Error Fetching Data Cube", error);
+      return res.status(500).json({ error: "Failed to fetch product data" });
     }
 
-    res.json(product);
+    res.json({ productId, responses }); // Send response
   } catch (error) {
-    console.error("Error fetching product:", error);
-    res.status(500).json({
-      error: "Failed to fetch product",
-      details: error.message,
-    });
+    console.error("Error Fetching Data:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
+
+
+
 
 
 app.listen(3000, () => {
