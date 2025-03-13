@@ -63,7 +63,7 @@ app.get("/api/products/get", async (req, res) => {
     // Create an array of promises for all API calls using environment variables
     
     const responses= await ApiCall();
-    const data = responses
+    const data = responses.flatMap(response => response.products || []);
     res.json(data);
     
     
@@ -84,23 +84,28 @@ app.get("/api/products/get", async (req, res) => {
 
 app.get("/api/products/:id", async (req, res) => {
   try {
-    const productId = req.params.id;
-    
+    const productId = Number(req.params.id); // Convert to a number
     let responses;
-    try {
-      responses = await ApiCall(); // Fetch API data
-      console.log(responses); // Debug: Check the response structure
-    } catch (error) {
-      console.log("Error Fetching Data Cube", error);
-      return res.status(500).json({ error: "Failed to fetch product data" });
+
+    responses = await ApiCall(); // Fetch data from APIs
+
+    // Ensure responses is an array of products
+    const products = responses.flatMap(response => response.products || []);
+
+    // Find the product
+    const product = products.find(product => product.id === productId);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
     }
 
-    res.json({ productId, responses }); // Send response
+    res.json({ product }); 
   } catch (error) {
     console.error("Error Fetching Data:", error);
     res.status(500).send("Internal Server Error");
   }
 });
+
 
 
 
