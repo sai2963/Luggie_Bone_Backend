@@ -8,6 +8,10 @@ require("dotenv").config();
 const ApiCall = require("./api");
 const cors = require("cors");
 const BrandDetails = require("./_components/brands");
+const VIPAPI = require("./_components/vipApi");
+const SKYBAGSAPI = require("./_components/skybagsApi");
+const SAFARIAPI = require("./_components/safariApi");
+const CAPRESEAPI = require("./_components/capreseApi");
 app.use(cors());
 app.use(express.json());
 
@@ -95,19 +99,46 @@ app.get("/api/products/:id", async (req, res) => {
   }
 });
 
-app.get("/api/brands", async(req ,res)=> {
+app.get("/api/brands", async (req, res) => {
   let brandsResponse;
   try {
     brandsResponse = await BrandDetails();
     res.json(brandsResponse);
-
-  }
-  catch(error) {
-    error("Error Fetching the Brands" ,error);
+  } catch (error) {
+    error("Error Fetching the Brands", error);
     res.status(500).send("Internal Server Error");
   }
-})
+});
+app.get("/api/brands/:brand", async (req, res) => {
+  const brand = req.params.brand;
 
+  try {
+    if (brand == "VIP") {
+      const brandResponse = await VIPAPI(brand); // Assuming VIPAPI needs the brand parameter
+      console.log(`Fetching data for brand: ${brand}`);
+      res.json(brandResponse);
+    } else if (brand == "Skybags") {
+      const brandResponse = await SKYBAGSAPI(brand); // Assuming VIPAPI needs the brand parameter
+      console.log(`Fetching data for brand: ${brand}`);
+      res.json(brandResponse);
+    } else if (brand == "Safari") {
+      const brandResponse = await SAFARIAPI(brand); // Assuming VIPAPI needs the brand parameter
+      console.log(`Fetching data for brand: ${brand}`);
+      res.json(brandResponse);
+    } else if (brand == "Caprese") {
+      const brandResponse = await CAPRESEAPI(brand); // Assuming VIPAPI needs the brand parameter
+      console.log(`Fetching data for brand: ${brand}`);
+      res.json(brandResponse);
+    } else {
+      const brandResponse = await ApiCall(brand); // Assuming VIPAPI needs the brand parameter
+      console.log(`Fetching data for brand: ${brand}`);
+      res.json(brandResponse);
+    }
+  } catch (error) {
+    console.error("Error fetching the data:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
