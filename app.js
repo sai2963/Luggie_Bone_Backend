@@ -114,25 +114,31 @@ app.get("/api/brands/:brand", async (req, res) => {
 
   try {
     if (brand == "VIP") {
-      const brandResponse = await VIPAPI(brand); // Assuming VIPAPI needs the brand parameter
+      const responses = await VIPAPI(brand); // Assuming VIPAPI needs the brand parameter
+      const brandproducts = responses.flatMap((response) => response.products || []);
+
       console.log(`Fetching data for brand: ${brand}`);
-      res.json(brandResponse);
+      res.json(brandproducts)
     } else if (brand == "Skybags") {
-      const brandResponse = await SKYBAGSAPI(brand); // Assuming VIPAPI needs the brand parameter
+      const responses = await SKYBAGSAPI(brand); // Assuming VIPAPI needs the brand parameter
+      const brandproducts = responses.flatMap((response) => response.products || []);
       console.log(`Fetching data for brand: ${brand}`);
-      res.json(brandResponse);
+      res.json(brandproducts)
     } else if (brand == "Safari") {
-      const brandResponse = await SAFARIAPI(brand); // Assuming VIPAPI needs the brand parameter
+      const responses = await SAFARIAPI(brand); // Assuming VIPAPI needs the brand parameter
+      const brandproducts = responses.flatMap((response) => response.products || []);
       console.log(`Fetching data for brand: ${brand}`);
-      res.json(brandResponse);
+      res.json(brandproducts)
     } else if (brand == "Caprese") {
-      const brandResponse = await CAPRESEAPI(brand); // Assuming VIPAPI needs the brand parameter
+      const responses = await CAPRESEAPI(brand); // Assuming VIPAPI needs the brand parameter
+      const brandproducts = responses.flatMap((response) => response.products || []);
       console.log(`Fetching data for brand: ${brand}`);
-      res.json(brandResponse);
+      res.json(brandproducts)
     } else {
-      const brandResponse = await ApiCall(brand); // Assuming VIPAPI needs the brand parameter
+      const responses = await ApiCall(brand); // Assuming VIPAPI needs the brand parameter
+      const brandproducts = responses.flatMap((response) => response.products || []);
       console.log(`Fetching data for brand: ${brand}`);
-      res.json(brandResponse);
+      res.json(brandproducts)
     }
   } catch (error) {
     console.error("Error fetching the data:", error);

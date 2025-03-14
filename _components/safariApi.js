@@ -1,7 +1,7 @@
 const axios = require("axios");
 require("dotenv").config();
 
-async function VIPAPI() {
+async function SAFARIAPI() {
   try {
     const fetchAPI = [
       axios.get(process.env.SAFARI_TROLLEY_BAGS),
@@ -19,4 +19,4 @@ async function VIPAPI() {
     return [];
   }
 }
-module.exports = VIPAPI;
+module.exports = SAFARIAPI;
