@@ -5,8 +5,9 @@ const prismaClient = require("./lib/db");
 const prisma = prismaClient.prisma;
 require("dotenv").config();
 
-const ApiCall =require("./api")
+const ApiCall = require("./api");
 const cors = require("cors");
+const BrandDetails = require("./_components/brands");
 app.use(cors());
 app.use(express.json());
 
@@ -60,19 +61,9 @@ app.get("/api/get", async (req, res) => {
 
 app.get("/api/products/get", async (req, res) => {
   try {
-    // Create an array of promises for all API calls using environment variables
-    
-    const responses= await ApiCall();
-    const data = responses.flatMap(response => response.products || []);
+    const responses = await ApiCall();
+    const data = responses.flatMap((response) => response.products || []);
     res.json(data);
-    
-    
-    
-    // const combinedData = responses.reduce((acc, response) => {
-    //   return acc.concat(response.data.products);
-    // }, []);
-
-    // res.json(combinedData);
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).json({
@@ -87,28 +78,35 @@ app.get("/api/products/:id", async (req, res) => {
     const productId = Number(req.params.id); // Convert to a number
     let responses;
 
-    responses = await ApiCall(); // Fetch data from APIs
+    responses = await ApiCall();
 
-    // Ensure responses is an array of products
-    const products = responses.flatMap(response => response.products || []);
+    const products = responses.flatMap((response) => response.products || []);
 
-    // Find the product
-    const product = products.find(product => product.id === productId);
+    const product = products.find((product) => product.id === productId);
 
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    res.json({ product }); 
+    res.json({ product });
   } catch (error) {
     console.error("Error Fetching Data:", error);
     res.status(500).send("Internal Server Error");
   }
 });
 
+app.get("/api/brands", async(req ,res)=> {
+  let brandsResponse;
+  try {
+    brandsResponse = await BrandDetails();
+    res.json(brandsResponse);
 
-
-
+  }
+  catch(error) {
+    error("Error Fetching the Brands" ,error);
+    res.status(500).send("Internal Server Error");
+  }
+})
 
 
 app.listen(3000, () => {
