@@ -141,6 +141,7 @@ app.get("/api/brands/:brand", async (req, res) => {
       res.json(brandproducts)
     }
   } catch (error) {
+    
     console.error("Error fetching the data:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
