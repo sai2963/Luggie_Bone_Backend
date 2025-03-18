@@ -8,7 +8,7 @@ async function SoftLuggageAPI() {
       axios.get(process.env.SKYBAGS_SOFT_LUGGAGE),
     ];
     const responses = await Promise.all(HLAPI);
-    const combineddata = responses.all((response) => response.data).flat();
+    const combineddata = responses.map((response) => response.data).flat();
     return combineddata;
   } catch (error) {
     console.error("Error Fetching Data");

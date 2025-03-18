@@ -8,7 +8,7 @@ async function Accessories() {
       axios.get(process.env.CAPRESE_ACCESSORIES_FOR_WOMEN),
     ];
     const responses = await Promise.all(HLAPI);
-    const combineddata = responses.all((response) => response.data).flat();
+    const combineddata = responses.map((response) => response.data).flat();
     return combineddata;
   } catch (error) {
     console.error("Error Fetching Data");

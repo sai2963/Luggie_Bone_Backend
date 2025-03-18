@@ -12,6 +12,7 @@ const VIPAPI = require("./_components/vipApi");
 const SKYBAGSAPI = require("./_components/skybagsApi");
 const SAFARIAPI = require("./_components/safariApi");
 const CAPRESEAPI = require("./_components/capreseApi");
+const Categories = require("./_components/categories");
 app.use(cors());
 app.use(express.json());
 
@@ -146,6 +147,31 @@ app.get("/api/brands/:brand", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+app.get("/api/categories", async (req,res)=>{
+  let CategoryResponse;
+  try{
+    CategoryResponse = await Categories();
+    res.json(CategoryResponse);
+  }
+  catch(error){
+    console.error("Error Fetching Data",error);
+    res.status(500).send("Internal Server Error");
+  }
+
+})
+app.get("/api/categories/:category",async (req,res)=>{
+  const Category = req.params.category;
+  let CategoryResponse;
+  try {
+    CategoryResponse =await Categories(Category)
+    res.json(CategoryResponse);
+  }
+  catch(error) {
+    console.error("Error Fetching Data",error);
+    res.status(500).send("Internal Server Error");
+  }
+})
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");

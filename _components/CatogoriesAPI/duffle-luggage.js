@@ -9,7 +9,7 @@ async function DuffleLuggageAPI() {
       axios.get(process.env.SAFARI_DUFFLES),
     ];
     const responses = await Promise.all(HLAPI);
-    const combineddata = responses.all((response) => response.data).flat();
+    const combineddata = responses.map((response) => response.data).flat();
     return combineddata;
   } catch (error) {
     console.error("Error Fetching Data");

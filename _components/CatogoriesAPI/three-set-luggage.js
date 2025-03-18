@@ -8,7 +8,7 @@ async function ThreeSetLuggageAPI() {
       axios.get(process.env.SAFARI_TROLLEY_BAGS),
     ];
     const responses = await Promise.all(HLAPI);
-    const combineddata = responses.all((response) => response.data).flat();
+    const combineddata = responses.map((response) => response.data).flat();
     return combineddata;
   } catch (error) {
     console.error("Error Fetching Data");

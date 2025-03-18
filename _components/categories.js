@@ -1,4 +1,30 @@
-function Categories() {
+const Accessories = require("./CatogoriesAPI/accessories");
+const BackPacksLuggageAPI = require("./CatogoriesAPI/backpacks");
+const CabinLuggageAPI = require("./CatogoriesAPI/cabin-luggage");
+const CheckinLuggageAPI = require("./CatogoriesAPI/check-in-luggage");
+const DuffleLuggageAPI = require("./CatogoriesAPI/duffle-luggage");
+const Handbags = require("./CatogoriesAPI/handbags");
+const HardLuggageAPI = require("./CatogoriesAPI/hard-luggage");
+const MediumLuggageAPI = require("./CatogoriesAPI/medium-luggage");
+const SlingsAPI = require("./CatogoriesAPI/slings");
+const SoftLuggageAPI = require("./CatogoriesAPI/soft-luggage");
+const ThreeSetLuggageAPI = require("./CatogoriesAPI/three-set-luggage");
+const TsaLockLuggageAPI = require("./CatogoriesAPI/tsa-lock-luggage");
+
+async function Categories() {
+  const hardLuggageData = await HardLuggageAPI();
+  const accessories = await Accessories();
+  const backpacks = await BackPacksLuggageAPI();
+  const cabinluggage = await CabinLuggageAPI();
+  const checkinluggage = await CheckinLuggageAPI();
+  const duffleluggage = await DuffleLuggageAPI();
+  const handbags = await Handbags();
+  const mediumluggage = await MediumLuggageAPI();
+  const slings = await SlingsAPI();
+  const softluggage = await SoftLuggageAPI();
+  const threesetluggage = await ThreeSetLuggageAPI();
+  const tsaluggage = await TsaLockLuggageAPI();
+
   const ProductsCategories = {
     HardLuggage: {
       name: "HardLuggage",
@@ -9,6 +35,7 @@ function Categories() {
         "https://skybags.co.in/cdn/shop/files/Adventure_2770a480-66b7-4eff-aa4f-cffc05f20477_2048x.png?v=1710741918",
         "https://www.sunrisetrading.in/wp-content/uploads/Safari-Luggage-Hard-Amaze-Blue-2.jpg",
       ],
+      API: hardLuggageData, 
     },
     SoftLuggage: {
       name: "SoftLuggage",
@@ -18,6 +45,7 @@ function Categories() {
         "https://th.bing.com/th/id/OIP.edGyHrKvshtEVtrND_fjnwHaEl?w=349&h=180&c=7&r=0&o=5&dpr=1.6&pid=1.7",
         "https://skybags.co.in/cdn/shop/files/Student_Travel_1_2048x.png?v=1695297287",
       ],
+      API: softluggage, 
     },
     CabinLuggage: {
       name: "CabinLuggage",
@@ -27,6 +55,7 @@ function Categories() {
         "https://th.bing.com/th/id/OIP.igV90HqTcFGgV7ymclRHKwHaEl?w=301&h=186&c=7&r=0&o=5&dpr=1.6&pid=1.7",
         "https://th.bing.com/th/id/OIP.wiE-DHs6TN_5KzHwhlZJ8wHaHa?w=193&h=193&c=7&r=0&o=5&dpr=1.6&pid=1.7",
       ],
+      API: cabinluggage, 
     },
     CheckinLuggage: {
       name: "CheckinLuggage",
@@ -36,6 +65,7 @@ function Categories() {
         "https://th.bing.com/th/id/OIP.amkqTWwwlvYBwFwVPkoPFgHaEl?w=298&h=184&c=7&r=0&o=5&dpr=1.6&pid=1.7",
         "https://th.bing.com/th/id/OIP.edGyHrKvshtEVtrND_fjnwHaEl?w=349&h=180&c=7&r=0&o=5&dpr=1.6&pid=1.7",
       ],
+      API: checkinluggage, 
     },
     MediumLuggage: {
       name: "MediumLugga",
@@ -45,6 +75,7 @@ function Categories() {
         "https://th.bing.com/th/id/OIP.amkqTWwwlvYBwFwVPkoPFgHaEl?w=298&h=184&c=7&r=0&o=5&dpr=1.6&pid=1.7",
         "https://th.bing.com/th/id/OIP.KJ3UvJvvaz1x0N90ki2yxAHaHa?w=197&h=197&c=7&r=0&o=5&dpr=1.6&pid=1.7",
       ],
+      API: mediumluggage, 
     },
     ThreeSetLuggage: {
       name: "ThreeSetLuggage",
@@ -54,6 +85,7 @@ function Categories() {
         "https://th.bing.com/th/id/OIP.kVhiVdTq3Zr_vQrRPBQMHwHaCs?w=349&h=127&c=7&r=0&o=5&dpr=1.6&pid=1.7",
         "https://th.bing.com/th/id/OIP.KJ3UvJvvaz1x0N90ki2yxAHaHa?w=197&h=197&c=7&r=0&o=5&dpr=1.6&pid=1.7",
       ],
+      API: threesetluggage, 
     },
     TSALockLuggae: {
       name: "TSALockLuggae",
@@ -63,6 +95,7 @@ function Categories() {
         "https://www.shutterstock.com/image-photo/gdansk-poland-september-20-2016-260nw-490240792.jpg",
         "https://th.bing.com/th/id/OIP.KJ3UvJvvaz1x0N90ki2yxAHaHa?w=197&h=197&c=7&r=0&o=5&dpr=1.6&pid=1.7",
       ],
+      API: tsaluggage,
     },
     Backpacks: {
       name: "Backpacks",
@@ -72,6 +105,7 @@ function Categories() {
         "https://skybags.co.in/cdn/shop/files/New_Desktop_Banner_1920x900_1_87_2048x.jpg?v=1714386326",
         "https://th.bing.com/th/id/OIP.KJ3UvJvvaz1x0N90ki2yxAHaHa?w=197&h=197&c=7&r=0&o=5&dpr=1.6&pid=1.7",
       ],
+      API: backpacks, 
     },
     Duffles: {
       name: "Duffles",
@@ -81,6 +115,7 @@ function Categories() {
         "https://cdn.shopify.com/s/files/1/2726/4990/articles/best-designer-duffle-bags.jpg?v=1663843454",
         "https://th.bing.com/th/id/OIP.KJ3UvJvvaz1x0N90ki2yxAHaHa?w=197&h=197&c=7&r=0&o=5&dpr=1.6&pid=1.7",
       ],
+      API: duffleluggage, 
     },
     Accessories: {
       name: "Accessories",
@@ -90,6 +125,7 @@ function Categories() {
         "https://th.bing.com/th/id/OIP.6_xGb_nl3NYyw0d3R9LlHgHaEU?rs=1&pid=ImgDetMain",
         "https://th.bing.com/th/id/OIP.KJ3UvJvvaz1x0N90ki2yxAHaHa?w=197&h=197&c=7&r=0&o=5&dpr=1.6&pid=1.7",
       ],
+      API: accessories, 
     },
     Handbags: {
       name: "Handbags",
@@ -99,6 +135,7 @@ function Categories() {
         "https://mir-s3-cdn-cf.behance.net/project_modules/1400/6df1bf57328315.59d20aa74f31b.png",
         "https://th.bing.com/th/id/OIP.KJ3UvJvvaz1x0N90ki2yxAHaHa?w=197&h=197&c=7&r=0&o=5&dpr=1.6&pid=1.7",
       ],
+      API: handbags, 
     },
     Slings: {
       name: "Slings",
@@ -108,6 +145,10 @@ function Categories() {
         "https://th.bing.com/th/id/OIP.hVU493j_hW5xFM0EkSJlHwHaCs?w=193&h=80&c=7&r=0&o=5&dpr=1.6&pid=1.7",
         "https://th.bing.com/th/id/OIP.KJ3UvJvvaz1x0N90ki2yxAHaHa?w=197&h=197&c=7&r=0&o=5&dpr=1.6&pid=1.7",
       ],
+      API: slings, 
     },
   };
+  return ProductsCategories;
 }
+
+module.exports = Categories;
