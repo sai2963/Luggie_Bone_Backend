@@ -160,18 +160,22 @@ app.get("/api/categories", async (req,res)=>{
   }
 
 })
-app.get("/api/categories/:category",async (req,res)=>{
-  const Category = req.params.category;
-  let CategoryResponse;
+app.get("/api/categories/:category", async (req, res) => {
+  const category = req.params.category; // Use lowercase variable name for better readability
   try {
-    CategoryResponse =await Categories(Category)
-    res.json(CategoryResponse);
+    const categoryData = await Categories(category); // Ensure this function fetches the category data properly
+
+    if (!categoryData) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+
+    res.json({ category: categoryData }); // Send only the requested category's data
+  } catch (error) {
+    console.error("Error fetching category data:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
-  catch(error) {
-    console.error("Error Fetching Data",error);
-    res.status(500).send("Internal Server Error");
-  }
-})
+});
+
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
