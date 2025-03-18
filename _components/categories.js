@@ -62,8 +62,9 @@ async function Categories() {
       Description:
         "Spacious, durable, secure, heavy, wheeled, reinforced, travel-friendly, checked, large, protective.",
       ImageUrl: [
-        "https://th.bing.com/th/id/OIP.amkqTWwwlvYBwFwVPkoPFgHaEl?w=298&h=184&c=7&r=0&o=5&dpr=1.6&pid=1.7",
         "https://th.bing.com/th/id/OIP.edGyHrKvshtEVtrND_fjnwHaEl?w=349&h=180&c=7&r=0&o=5&dpr=1.6&pid=1.7",
+        "https://th.bing.com/th/id/OIP.amkqTWwwlvYBwFwVPkoPFgHaEl?w=298&h=184&c=7&r=0&o=5&dpr=1.6&pid=1.7",
+        
       ],
       API: checkinluggage, 
     },
@@ -72,8 +73,9 @@ async function Categories() {
       Description:
         "Medium luggage balances size and capacity, ideal for short to mid-length trips. It offers durability, portability, and organized storage, often featuring wheels and locks.",
       ImageUrl: [
-        "https://th.bing.com/th/id/OIP.amkqTWwwlvYBwFwVPkoPFgHaEl?w=298&h=184&c=7&r=0&o=5&dpr=1.6&pid=1.7",
         "https://th.bing.com/th/id/OIP.KJ3UvJvvaz1x0N90ki2yxAHaHa?w=197&h=197&c=7&r=0&o=5&dpr=1.6&pid=1.7",
+        "https://th.bing.com/th/id/OIP.amkqTWwwlvYBwFwVPkoPFgHaEl?w=298&h=184&c=7&r=0&o=5&dpr=1.6&pid=1.7",
+        
       ],
       API: mediumluggage, 
     },
