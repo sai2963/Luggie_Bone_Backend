@@ -69,7 +69,7 @@ async function Categories() {
       API: checkinluggage, 
     },
     MediumLuggage: {
-      name: "MediumLugga",
+      name: "MediumLuggage",
       Description:
         "Medium luggage balances size and capacity, ideal for short to mid-length trips. It offers durability, portability, and organized storage, often featuring wheels and locks.",
       ImageUrl: [
